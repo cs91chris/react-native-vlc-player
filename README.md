@@ -15,7 +15,6 @@
 
 ##### Add dependency to `android/settings.gradle`
 ```
-...
 include ':libvlc'
 project(':libvlc').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vlc-player/android/libvlc')
 
@@ -27,7 +26,6 @@ project(':react-native-vlc-player').projectDir = new File(rootProject.projectDir
 ```
 ...
 dependencies {
-    ...
     compile project(':react-native-vlc-player')
 }
 ```
@@ -44,43 +42,48 @@ import com.ghondar.vlcplayer.*;  // <--- import
  }
 ```
 
-#### Usage
+#### Usage App.js
 
 ```Javascript
-import React, { AppRegistry, StyleSheet, Component, View, Text, TouchableHighlight } from 'react-native'
+import React, { Component } from 'react'
+import { AppRegistry, StyleSheet, View, Text, TouchableHighlight } from 'react-native'
 
 import { play } from 'react-native-vlc-player'
 
-class Example extends Component {
-  constructor(props, context) {
-    super(props, context)
-  }
 
-  render() {
+export default class Example extends Component {
+    constructor(props) {
+        super(props)
+    }
 
-    return (
-      <View style={styles.container}>
-
-        <TouchableHighlight
-          onPress={() => { play('file:///storage/emulated/0/example.avi') }}>
-            <Text >Play Video!</Text>
-        </TouchableHighlight>
-
-      </View>
-    )
-  }
+    render() {
+        return (
+            <View style={styles.container}>
+                { play('file:///storage/emulated/0/example.avi') }
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  }
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
+    }
 });
 
 AppRegistry.registerComponent('example', () => Example);
+```
+
+*If you getting some error try change vsupportLibVersion in build.gradle of your project*
+```gradle
+buildscript {
+    ext {
+        ...
+        supportLibVersion = "26.0.0"
+    }
 ```
 
 #### LICENSE
