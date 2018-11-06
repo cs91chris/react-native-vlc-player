@@ -1,10 +1,10 @@
 ### React-Native-VLC-Player
 
+*The fork was necessary as the project seems abandoned*
+
 > VLC Player for react-native
 
 *Only Android support now.*
-
-![](https://media.giphy.com/media/l4hLFPgXI7ipAAMGk/giphy.gif)
 
 #### Integrate
 
@@ -48,7 +48,7 @@ import com.ghondar.vlcplayer.*;  // <--- import
 
 ```Javascript
 import React, { AppRegistry, StyleSheet, Component, View, Text, TouchableHighlight } from 'react-native'
-import { play } from 'react-native-vlc-player'
+import { play, playList } from 'react-native-vlc-player'
 
 
 class Example extends Component {
@@ -61,6 +61,9 @@ class Example extends Component {
     return (
       <View style={styles.container}>
           { play('file:///storage/emulated/0/example.avi') }
+          /*
+            { playList(['example1.avi', 'example2.avi', 'example3.avi'], 0) }
+          */
       </View>
     )
   }
@@ -77,6 +80,13 @@ const styles = StyleSheet.create({
 
 AppRegistry.registerComponent('example', () => Example);
 ```
+
+#### USAGE
+
+1. Swipe Up to exit
+2. Swipe Left or Right to change media
+2. Click to pause and unpause (does not work yet)
+
 
 #### LICENSE
 MIT
