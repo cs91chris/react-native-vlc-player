@@ -1,12 +1,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.vlcplayer">
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
       android:allowBackup="false"
-      android:theme="@style/AppTheme">
+      android:theme="@style/AppTheme"
+      android:hardwareAccelerated="true">
       <activity
           android:name="com.ghondar.vlcplayer.PlayerActivity"
+          android:screenOrientation="landscape"
           android:configChanges="orientation|keyboardHidden|screenSize"
-          android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+          android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
       </activity>
     </application>
 </manifest>

@@ -4,14 +4,14 @@ package com.ghondar.vlcplayer;
 import java.io.File;
 import java.util.ArrayList;
 
+import android.widget.Toast;
 import android.content.Intent;
 import android.os.Environment;
-import android.widget.Toast;
 
-import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
 
 import org.videolan.libvlc.LibVLC;
 import org.videolan.libvlc.util.VLCUtil;

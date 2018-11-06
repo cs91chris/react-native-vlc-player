@@ -2,9 +2,7 @@
 
 > VLC Player for react-native
 
-*The fork was necessary as the project seems abandoned*
-
-*Only Android support now*
+*Only Android support now.*
 
 ![](https://media.giphy.com/media/l4hLFPgXI7ipAAMGk/giphy.gif)
 
@@ -30,7 +28,7 @@ project(':react-native-vlc-player').projectDir = new File(rootProject.projectDir
 ...
 dependencies {
     ...
-    compile project(':react-native-vlc-player')
+    implementation project(':react-native-vlc-player')
 }
 ```
 ##### Register module in `MainApplication.java`
@@ -49,18 +47,17 @@ import com.ghondar.vlcplayer.*;  // <--- import
 #### Usage
 
 ```Javascript
-import React, { AppRegistry, StyleSheet, Component, View } from 'react-native'
-import { play, setDefaultOptions, setOption } from 'react-native-vlc-player'
+import React, { AppRegistry, StyleSheet, Component, View, Text, TouchableHighlight } from 'react-native'
+import { play } from 'react-native-vlc-player'
 
 
 class Example extends Component {
   constructor(props, context) {
     super(props, context)
-    setDefaultOptions()
-    setOption("--no-stats")
   }
 
   render() {
+
     return (
       <View style={styles.container}>
           { play('file:///storage/emulated/0/example.avi') }

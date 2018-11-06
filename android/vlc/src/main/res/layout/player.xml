@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black"
-    tools:context="com.ghondar.vlcplayer.PlayerActivity">
+    tools:context="com.ghondar.vlcplayer.PlayerActivity"
+    android:animateLayoutChanges="true">
 
     <LinearLayout
         android:id="@+id/vlc_container"
@@ -26,15 +27,19 @@
             <FrameLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="#69000000"
-                android:id="@+id/vlc_overlay">
+                android:visibility="invisible"
+                android:background="#90000000"
+                android:id="@+id/overlay">
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:id="@+id/vlc_button_play_pause"
-                    android:src="@drawable/ic_action_pause_over_video"
-                    android:layout_gravity="center" />
+                <ProgressBar
+                    android:layout_weight="1"
+                    android:id="@+id/spinner"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:minHeight="60dp"
+                    android:minWidth="60dp" />
             </FrameLayout>
         </FrameLayout>
     </LinearLayout>

@@ -1,34 +1,47 @@
 package com.ghondar.vlcplayer;
 
 
+import android.view.View;
+
+import android.widget.Toast;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+
+import com.vlcplayer.R;
+
 import java.lang.ref.WeakReference;
 import org.videolan.libvlc.MediaPlayer;
 
 
+
 class VLCPlayerListener implements MediaPlayer.EventListener {
-    private WeakReference<PlayerActivity> mOwner;
+
+    private PlayerActivity player;
+
 
     public VLCPlayerListener(PlayerActivity owner) {
-        mOwner = new WeakReference<PlayerActivity>(owner);
+        WeakReference<PlayerActivity> mOwner = new WeakReference<PlayerActivity>(owner);
+        this.player = mOwner.get();
     }
 
     @Override
     public void onEvent(MediaPlayer.Event event) {
-        PlayerActivity player = mOwner.get();
-
         switch(event.type) {
             case MediaPlayer.Event.EndReached:
                 player.releasePlayer();
             break;
             case MediaPlayer.Event.EncounteredError:
+                Toast.makeText(player, "Unable to play source", Toast.LENGTH_LONG).show();
+                player.finish();
             break;
             case MediaPlayer.Event.MediaChanged:
             break;
             case MediaPlayer.Event.Opening:
-                // OPEN SPINNER
+                spinnerShow(View.VISIBLE);
             break;
             case MediaPlayer.Event.Playing:
-                // CLOSE SPINNER
+                spinnerShow(View.GONE);
             break;
             case MediaPlayer.Event.Paused:
             break;
@@ -37,5 +50,13 @@ class VLCPlayerListener implements MediaPlayer.EventListener {
             default:
             break;
         }
+    }
+
+    private void spinnerShow(int visible) {
+        ProgressBar spinner = (ProgressBar) player.findViewById(R.id.spinner);
+        FrameLayout vlcOverlay = (FrameLayout) this.player.findViewById(R.id.overlay);
+
+        vlcOverlay.setVisibility(visible);
+        spinner.setVisibility(visible);
     }
 }

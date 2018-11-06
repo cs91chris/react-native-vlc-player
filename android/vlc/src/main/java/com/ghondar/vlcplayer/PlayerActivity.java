@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,19 +35,15 @@ import org.videolan.libvlc.MediaPlayer;
 public class PlayerActivity extends Activity implements IVLCVout.Callback {
     private int sourceIdx;
     private String mFilePath;
-    private ArrayList<String> sources = null;
+    private ArrayList<String> sources;
 
     private LinearLayout layout;
     private SurfaceView mSurface;
     private SurfaceHolder holder;
-    private FrameLayout vlcOverlay;
-    private ImageView vlcButtonPlayPause;
-    private Handler handlerOverlay;
-    private Runnable runnableOverlay;
 
     private LibVLC libvlc;
-    private MediaPlayer mMediaPlayer = null;
-    private MediaPlayer.EventListener mPlayerListener = new VLCPlayerListener(this);
+    private MediaPlayer mMediaPlayer;
+    private MediaPlayer.EventListener mPlayerListener;
 
 
     @Override
@@ -58,28 +53,25 @@ public class PlayerActivity extends Activity implements IVLCVout.Callback {
 
         layout = (LinearLayout) findViewById(R.id.vlc_container);
         mSurface = (SurfaceView) findViewById(R.id.vlc_surface);
-        vlcOverlay = (FrameLayout) findViewById(R.id.vlc_overlay);
-        vlcButtonPlayPause = (ImageView) findViewById(R.id.vlc_button_play_pause);
 
         Intent intent = getIntent();
         sources = intent.getStringArrayListExtra(VLCPlayer.SOURCES);
         sourceIdx = intent.getExtras().getInt(VLCPlayer.INDEX);
         mFilePath = sources.get(sourceIdx);
 
+        mPlayerListener = new VLCPlayerListener(this);
         playMovie(mFilePath);
     }
 
     @Override
     protected void onResume() {
         mMediaPlayer.play();
-        vlcButtonPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause_over_video));
         super.onResume();
     }
 
     @Override
     protected void onPause() {
         mMediaPlayer.pause();
-        vlcButtonPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play_over_video));
         super.onPause();
     }
 
@@ -113,11 +105,12 @@ public class PlayerActivity extends Activity implements IVLCVout.Callback {
                 vout.addCallback(this);
                 vout.attachViews();
             }
-            playSource(media);
         }
         catch(Exception e) {
-            Toast.makeText(this, "Error starting player!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Error starting player", Toast.LENGTH_LONG).show();
+            finish();
         }
+        playSource(media);
     }
 
     @Override
@@ -190,8 +183,20 @@ public class PlayerActivity extends Activity implements IVLCVout.Callback {
         if(mMediaPlayer.isPlaying()) {
             mMediaPlayer.stop();
         }
-        mMediaPlayer.setMedia(new Media(libvlc, Uri.parse(src)));
-        mMediaPlayer.play();
+        Media m = new Media(libvlc, Uri.parse(src));
+        m.setHWDecoderEnabled(true, false);
+        m.addOption(":network-caching=150");
+        m.addOption(":clock-jitter=0");
+        m.addOption(":clock-synchro=0");
+
+        try {
+            mMediaPlayer.setMedia(m);
+            mMediaPlayer.play();
+        }
+        catch(Exception exc) {
+            Toast.makeText(this, "Unable to play source", Toast.LENGTH_LONG).show();
+            finish();
+        }
     }
 
     private void toggleFullscreen(boolean fullscreen) {
@@ -214,64 +219,49 @@ public class PlayerActivity extends Activity implements IVLCVout.Callback {
     }
 
     private void setupControls() {
-        this.mSurface.setOnTouchListener( 
-            new OnSwipeTouchListener(PlayerActivity.this) {
-                @Override
-                public void onSwipeRight() {
-                    super.onSwipeLeft();
+        this.mSurface.setOnTouchListener(new OnSwipeTouchListener(PlayerActivity.this) {
+            @Override
+            public void onSwipeRight() {
+                super.onSwipeLeft();
 
-                    if(sources != null) {                        
-                        if(--sourceIdx < 0) {
-                            sourceIdx = sources.size()-1;                            
-                        }
-                        playSource(sources.get(sourceIdx));
+                if(sources != null && sources.size() > 1) {                        
+                    if(--sourceIdx < 0) {
+                        sourceIdx = sources.size()-1;                            
                     }
-                }
-                @Override
-                public void onSwipeLeft() {
-                    super.onSwipeRight();
-
-                    if(sources != null) {                        
-                        if(++sourceIdx > sources.size()-1) {
-                            sourceIdx = 0;
-                        }
-                        playSource(sources.get(sourceIdx));
-                    }
+                    playSource(sources.get(sourceIdx));
                 }
             }
-        );
-
-        vlcButtonPlayPause.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onSwipeLeft() {
+                super.onSwipeRight();
+
+                if(sources != null && sources.size() > 1) {                        
+                    if(++sourceIdx > sources.size()-1) {
+                        sourceIdx = 0;
+                    }
+                    playSource(sources.get(sourceIdx));
+                }
+            }
+            @Override
+            public void onSwipeUp() {
+                PlayerActivity.this.finish();
+            }
+
+/*  TODO CHECKME
+            @Override
+            public void onClick() {
+                FrameLayout vlcOverlay;
+                vlcOverlay = (FrameLayout) PlayerActivity.this.findViewById(R.id.overlay);
+
                 if(mMediaPlayer.isPlaying()) {
                     mMediaPlayer.pause();
-                    vlcButtonPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_play_over_video));
+                    vlcOverlay.setVisibility(View.VISIBLE);
                 }
                 else {
                     mMediaPlayer.play();
-                    vlcButtonPlayPause.setImageDrawable(getResources().getDrawable(R.drawable.ic_action_pause_over_video));
+                    vlcOverlay.setVisibility(View.GONE);
                 }
-            }
-        });
-
-        handlerOverlay = new Handler();
-        runnableOverlay = new Runnable() {
-            @Override
-            public void run() {
-                vlcOverlay.setVisibility(View.GONE);
-                toggleFullscreen(true);
-            }
-        };
-
-        handlerOverlay.postDelayed(runnableOverlay, 3000);
-        layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                vlcOverlay.setVisibility(View.VISIBLE);
-                handlerOverlay.removeCallbacks(runnableOverlay);
-                handlerOverlay.postDelayed(runnableOverlay, 3000);
-            }
+            } */
         });
     }
 
