@@ -2,7 +2,9 @@
 
 > VLC Player for react-native
 
-*Only Android support now.*
+*The fork was necessary as the project seems abandoned*
+
+*Only Android support now*
 
 ![](https://media.giphy.com/media/l4hLFPgXI7ipAAMGk/giphy.gif)
 
@@ -15,6 +17,7 @@
 
 ##### Add dependency to `android/settings.gradle`
 ```
+...
 include ':libvlc'
 project(':libvlc').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vlc-player/android/libvlc')
 
@@ -26,6 +29,7 @@ project(':react-native-vlc-player').projectDir = new File(rootProject.projectDir
 ```
 ...
 dependencies {
+    ...
     compile project(':react-native-vlc-player')
 }
 ```
@@ -42,49 +46,41 @@ import com.ghondar.vlcplayer.*;  // <--- import
  }
 ```
 
-#### Usage App.js
+#### Usage
 
 ```Javascript
-import React, { Component } from 'react'
-import { AppRegistry, StyleSheet, View, Text, TouchableHighlight } from 'react-native'
-
-import { play } from 'react-native-vlc-player'
+import React, { AppRegistry, StyleSheet, Component, View } from 'react-native'
+import { play, setDefaultOptions, setOption } from 'react-native-vlc-player'
 
 
-export default class Example extends Component {
-    constructor(props) {
-        super(props)
-    }
+class Example extends Component {
+  constructor(props, context) {
+    super(props, context)
+    setDefaultOptions()
+    setOption("--no-stats")
+  }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                { play('file:///storage/emulated/0/example.avi') }
-            </View>
-        )
-    }
+  render() {
+    return (
+      <View style={styles.container}>
+          { play('file:///storage/emulated/0/example.avi') }
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    }
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  }
 });
 
 AppRegistry.registerComponent('example', () => Example);
 ```
 
-*If you getting some error try change vsupportLibVersion in build.gradle of your project*
-```gradle
-buildscript {
-    ext {
-        ...
-        supportLibVersion = "26.0.0"
-    }
-```
-
 #### LICENSE
 MIT
+

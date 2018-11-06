@@ -1,12 +1,37 @@
 {
-  "name": "react-native-vlc-player",
-  "version": "0.1.0",
-  "description": "VLC Player for react-native",
-  "main": "index.js",
-  "scripts": {
-    "test": "npm test"
+  "_from": "react-native-vlc-player@^0.1.0",
+  "_id": "react-native-vlc-player@0.1.0",
+  "_inBundle": false,
+  "_integrity": "sha512-Jp7lX46owAWqk6/QTEz3AACki2JOsdym+pVPKR/ZuiTJeZBX7RCr2D4nKw5JYuxwVSXZtsoxhxveZ8mUxvGvMQ==",
+  "_location": "/react-native-vlc-player",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "react-native-vlc-player@^0.1.0",
+    "name": "react-native-vlc-player",
+    "escapedName": "react-native-vlc-player",
+    "rawSpec": "^0.1.0",
+    "saveSpec": null,
+    "fetchSpec": "^0.1.0"
   },
-  "repository": "git@github.com:ghondar/react-native-vlc-player.git",
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/react-native-vlc-player/-/react-native-vlc-player-0.1.0.tgz",
+  "_shasum": "100ec5e35db4ef9331d158e8d784fd75f197fe14",
+  "_spec": "react-native-vlc-player@^0.1.0",
+  "_where": "t:\\TEST\\DisneyPark\\cams",
+  "author": {
+    "name": "abgv9221@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/ghondar/react-native-vlc-player/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "VLC Player for react-native",
+  "homepage": "https://github.com/ghondar/react-native-vlc-player#readme",
   "keywords": [
     "react-native",
     "android",
@@ -14,6 +39,15 @@
     "player",
     "video"
   ],
-  "author": "abgv9221@gmail.com",
-  "license": "MIT"
+  "license": "MIT",
+  "main": "index.js",
+  "name": "react-native-vlc-player",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ghondar/react-native-vlc-player.git"
+  },
+  "scripts": {
+    "test": "npm test"
+  },
+  "version": "0.1.0"
 }
